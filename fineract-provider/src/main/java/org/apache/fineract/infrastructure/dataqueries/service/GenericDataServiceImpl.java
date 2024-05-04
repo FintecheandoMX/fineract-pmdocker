@@ -232,6 +232,7 @@ public class GenericDataServiceImpl implements GenericDataService {
                     colDisplayType = ResultsetColumnHeaderData.calcColumnDisplayType(colType);
                 }
                 currVal = row.get(j);
+                LOGGER.info("CURRVAL "+currVal);
                 if (currVal != null && colDisplayType != null) {
                     if (colDisplayType == ResultsetColumnHeaderData.DisplayType.DATE) {
                         final LocalDate localDate = (LocalDate) currVal;
