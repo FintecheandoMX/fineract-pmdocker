@@ -43,12 +43,15 @@ import org.apache.fineract.infrastructure.core.service.database.DatabaseTypeReso
 import org.apache.fineract.infrastructure.core.service.database.IndexDetail;
 import org.apache.fineract.infrastructure.core.service.database.JdbcJavaType;
 import org.apache.fineract.infrastructure.core.service.database.RoutingDataSource;
+import org.apache.fineract.infrastructure.dataqueries.api.DatatablesApiResource;
 import org.apache.fineract.infrastructure.dataqueries.data.GenericResultsetData;
 import org.apache.fineract.infrastructure.dataqueries.data.ResultsetColumnHeaderData;
 import org.apache.fineract.infrastructure.dataqueries.data.ResultsetColumnValueData;
 import org.apache.fineract.infrastructure.dataqueries.data.ResultsetRowData;
 import org.apache.fineract.infrastructure.dataqueries.exception.DatatableNotFoundException;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -65,6 +68,8 @@ public class GenericDataServiceImpl implements GenericDataService {
     private final DatabaseIndependentQueryService databaseIndependentQueryService;
     private final DatatableKeywordGenerator datatableKeywordGenerator;
     private final DatabaseTypeResolver databaseTypeResolver;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenericDataServiceImpl.class);
 
     @Override
     public GenericResultsetData fillGenericResultSet(final String sql) {
@@ -143,6 +148,7 @@ public class GenericDataServiceImpl implements GenericDataService {
 
     @NotNull
     private static List<ResultsetRowData> fillResultsetRowData(SqlRowSet rs, List<ResultsetColumnHeaderData> columnHeaders) {
+        LOGGER.info("*****************************fillResultsetRowData*****************************");
         final SqlRowSetMetaData rsmd = rs.getMetaData();
         final List<ResultsetRowData> resultsetDataRows = new ArrayList<>();
         while (rs.next()) {
