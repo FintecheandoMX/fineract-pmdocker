@@ -176,9 +176,9 @@ public class GenericDataServiceImpl implements GenericDataService {
                                 LOGGER.info("rowColumnValues ID "+rowColumnValue.getId()); 
                                 LOGGER.info("rowColumnValues VALUE "+rowColumnValue.getValue()); 
                                 int columnNameId = (int)rs.getObject(columnName);
-                                if(columnNameId==rowColumnValue.id){
+                                if(columnNameId==rowColumnValue.getId()){
                                     LOGGER.info("SE AGREGA VALUE "+rowColumnValue.getValue()); 
-                                    columnValues.add((Object)rowColumnValue.value);            
+                                    columnValues.add((Object)rowColumnValue.getValue());            
                                 }
                             }
                         }
