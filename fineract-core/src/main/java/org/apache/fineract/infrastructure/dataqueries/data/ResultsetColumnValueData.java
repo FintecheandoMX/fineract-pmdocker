@@ -54,7 +54,7 @@ public class ResultsetColumnValueData implements Serializable {
         return this.id;
     }
 
-    public int getValue(){
+    public String getValue(){
         return this.value;
     }
 
