@@ -169,7 +169,7 @@ public class GenericDataServiceImpl implements GenericDataService {
                     columnValues.add(
                             tmpDate == null ? null : (tmpDate instanceof Timestamp ? ((Timestamp) tmpDate).toLocalDateTime() : tmpDate));
                 } else {
-                    if(colDisplayType == DisplayType.CODELOOKUP){
+                    if(colDisplayType == ResultsetColumnHeaderData.DisplayType.CODELOOKUP){
                         if(columnHeaders.get(i).hasColumnValues()){
                             List<ResultsetColumnValueData> rowColumnValues = columnHeaders.get(i).getColumnValues();
                             for (ResultsetColumnValueData rowColumnValue : rowColumnValues) {
