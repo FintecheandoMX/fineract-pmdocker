@@ -169,7 +169,26 @@ public class GenericDataServiceImpl implements GenericDataService {
                     columnValues.add(
                             tmpDate == null ? null : (tmpDate instanceof Timestamp ? ((Timestamp) tmpDate).toLocalDateTime() : tmpDate));
                 } else {
-                    columnValues.add(rs.getObject(columnName));
+                    if(colDisplayType.isCodeLookupDisplayType()){
+                        if(columnHeaders.get(i).hasColumnValues()){
+                            List<ResultsetColumnValueData> rowColumnValues = columnHeaders.get(i).getColumnValues();
+                            for (ResultsetColumnValueData rowColumnValue : rowColumnValues) {
+                                LOGGER.info("rowColumnValues ID "+rowColumnValue.id); 
+                                LOGGER.info("rowColumnValues VALUE "+rowColumnValue.value); 
+                                int columnNameId = new Integer(rs.getObject(columnName)).intValue();
+                                if(columnNameId==rowColumnValue.id){
+                                    LOGGER.info("SE AGREGA VALUE "+rowColumnValue.value); 
+                                    columnValues.add((Object)rowColumnValue.value);            
+                                }
+                            }
+                        }
+                        else{
+                            columnValues.add(rs.getObject(columnName));    
+                        }
+                    }
+                    else {
+                        columnValues.add(rs.getObject(columnName));
+                    }
                 }
             }
             resultsetDataRows.add(ResultsetRowData.create(columnValues));
