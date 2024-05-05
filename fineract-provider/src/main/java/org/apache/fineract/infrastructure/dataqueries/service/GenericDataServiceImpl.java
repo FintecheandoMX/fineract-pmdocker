@@ -149,15 +149,18 @@ public class GenericDataServiceImpl implements GenericDataService {
     private static List<ResultsetRowData> fillResultsetRowData(SqlRowSet rs, List<ResultsetColumnHeaderData> columnHeaders) {
         LOGGER.info("*****************************fillResultsetRowData*****************************");
         final SqlRowSetMetaData rsmd = rs.getMetaData();
-        final List<ResultsetRowData> resultsetDataRows = new ArrayList<>();
+        final List<ResultsetRowData> resultsetDataRows = new ArrayList<>();        
         while (rs.next()) {
             final List<Object> columnValues = new ArrayList<>();
+            ResultsetColumnHeaderData.DisplayType colDisplayType;
+
             for (int i = 0; i < rsmd.getColumnCount(); i++) {
-                final String columnName = rsmd.getColumnName(i + 1);
-                
+                final String columnName = rsmd.getColumnName(i + 1);                
                 LOGGER.info("columnName "+columnName);
                 final JdbcJavaType colType = columnHeaders.get(i).getColumnType();
-                LOGGER.info("colType "+colType);
+                LOGGER.info("colType "+columnName);
+                colDisplayType= columnHeaders.get(i).getColumnDisplayType();
+                LOGGER.info("colDisplayType "+colDisplayType);
                 if (colType == DATE) {
                     Date tmpDate = (Date) rs.getObject(columnName);
                     columnValues.add(tmpDate == null ? null : tmpDate.toLocalDate());
