@@ -44,7 +44,7 @@ public final class GenericResultsetData {
 
     public List<ResultsetRowData> getData() {
         for (ResultsetRowData rowData : this.data) {
-            LOGGER.info("ROWDATA "+rowData); 
+            LOGGER.trace("ROWDATA "+rowData); 
         }
         return this.data;
     }

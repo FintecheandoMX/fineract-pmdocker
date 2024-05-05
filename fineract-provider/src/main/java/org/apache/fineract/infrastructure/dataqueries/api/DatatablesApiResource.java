@@ -269,12 +269,12 @@ public class DatatablesApiResource {
         if (genericResultSet) {
             final boolean prettyPrint = ApiParameterHelper.prettyPrint(uriInfo.getQueryParameters());
             json = this.toApiJsonSerializer.serializePretty(prettyPrint, results);
-            LOGGER.info("genericResultSetgenericResultSet TRUE");
+            LOGGER.trace("genericResultSetgenericResultSet TRUE");
         } else {
             json = this.genericDataService.generateJsonFromGenericResultsetData(results);
-            LOGGER.info("genericResultSetgenericResultSet FALSE");
+            LOGGER.trace("genericResultSetgenericResultSet FALSE");
         }
-        LOGGER.info("REGRESO DATOS DE DATA TABLE CON ID");
+        LOGGER.trace("REGRESO DATOS DE DATA TABLE CON ID");
         return json;
     }
 
@@ -299,7 +299,7 @@ public class DatatablesApiResource {
         } else {
             json = this.genericDataService.generateJsonFromGenericResultsetData(results);
         }
-        LOGGER.info("REGRESO DATOS DE DATA TABLE CON NOMBRE E ID");
+        LOGGER.trace("REGRESO DATOS DE DATA TABLE CON NOMBRE E ID");
         return json;
     }
 

@@ -147,7 +147,7 @@ public class GenericDataServiceImpl implements GenericDataService {
 
     @NotNull
     private static List<ResultsetRowData> fillResultsetRowData(SqlRowSet rs, List<ResultsetColumnHeaderData> columnHeaders) {
-        LOGGER.info("*****************************fillResultsetRowData*****************************");
+        LOGGER.trace("*****************************fillResultsetRowData*****************************");
         final SqlRowSetMetaData rsmd = rs.getMetaData();
         final List<ResultsetRowData> resultsetDataRows = new ArrayList<>();        
         while (rs.next()) {
@@ -156,11 +156,11 @@ public class GenericDataServiceImpl implements GenericDataService {
 
             for (int i = 0; i < rsmd.getColumnCount(); i++) {
                 final String columnName = rsmd.getColumnName(i + 1);                
-                LOGGER.info("columnName "+columnName);
+                LOGGER.trace("columnName "+columnName);
                 final JdbcJavaType colType = columnHeaders.get(i).getColumnType();
-                LOGGER.info("colType "+columnName);
+                LOGGER.trace("colType "+columnName);
                 colDisplayType= columnHeaders.get(i).getColumnDisplayType();
-                LOGGER.info("colDisplayType "+colDisplayType);
+                LOGGER.trace("colDisplayType "+colDisplayType);
                 if (colType == DATE) {
                     Date tmpDate = (Date) rs.getObject(columnName);
                     columnValues.add(tmpDate == null ? null : tmpDate.toLocalDate());
@@ -173,14 +173,14 @@ public class GenericDataServiceImpl implements GenericDataService {
                         if(columnHeaders.get(i).hasColumnValues()){
                             List<ResultsetColumnValueData> rowColumnValues = columnHeaders.get(i).getColumnValues();
                             for (ResultsetColumnValueData rowColumnValue : rowColumnValues) {
-                                LOGGER.info("rowColumnValues ID "+rowColumnValue.getId()); 
-                                LOGGER.info("rowColumnValues VALUE "+rowColumnValue.getValue()); 
+                                LOGGER.trace("rowColumnValues ID "+rowColumnValue.getId()); 
+                                LOGGER.trace("rowColumnValues VALUE "+rowColumnValue.getValue()); 
                                 if(rs.getObject(columnName)!=null)
                                 {
-                                    LOGGER.info("SE AGREGA rs.getObject(columnName) "+rs.getObject(columnName)); 
+                                    LOGGER.trace("SE AGREGA rs.getObject(columnName) "+rs.getObject(columnName)); 
                                     int columnNameId = (int)rs.getObject(columnName);
                                     if(columnNameId==rowColumnValue.getId()){
-                                        LOGGER.info("SE AGREGA VALUE "+rowColumnValue.getValue()); 
+                                        LOGGER.trace("SE AGREGA VALUE "+rowColumnValue.getValue()); 
                                         columnValues.add((Object)rowColumnValue.getValue());            
                                     }
                                 }                                
@@ -254,14 +254,14 @@ public class GenericDataServiceImpl implements GenericDataService {
                 ResultsetColumnHeaderData columnHeader = columnHeaders.get(j);
                 writer.append(doubleQuote + columnHeader.getColumnName() + doubleQuote + ": ");
                 colDisplayType = columnHeader.getColumnDisplayType();
-                LOGGER.info("colDisplayType1 "+colDisplayType);
+                LOGGER.trace("colDisplayType1 "+colDisplayType);
                 final JdbcJavaType colType = columnHeader.getColumnType();
                 if (colDisplayType == null) {
                     colDisplayType = ResultsetColumnHeaderData.calcColumnDisplayType(colType);
                 }
-                LOGGER.info("colDisplayType2 "+colDisplayType);
+                LOGGER.trace("colDisplayType2 "+colDisplayType);
                 currVal = row.get(j);
-                LOGGER.info("CURRVAL"+currVal);
+                LOGGER.trace("CURRVAL"+currVal);
                 if (currVal != null && colDisplayType != null) {
                     if (colDisplayType == ResultsetColumnHeaderData.DisplayType.DATE) {
                         final LocalDate localDate = (LocalDate) currVal;
