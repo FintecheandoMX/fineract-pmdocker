@@ -49,4 +49,13 @@ public class ResultsetColumnValueData implements Serializable {
     public boolean codeMatches(final Integer match) {
         return match.intValue() == this.id;
     }
+
+    public int getId(){
+        return this.id;
+    }
+
+    public int getValue(){
+        return this.value;
+    }
+
 }
