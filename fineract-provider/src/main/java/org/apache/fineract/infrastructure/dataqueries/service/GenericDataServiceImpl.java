@@ -43,7 +43,6 @@ import org.apache.fineract.infrastructure.core.service.database.DatabaseTypeReso
 import org.apache.fineract.infrastructure.core.service.database.IndexDetail;
 import org.apache.fineract.infrastructure.core.service.database.JdbcJavaType;
 import org.apache.fineract.infrastructure.core.service.database.RoutingDataSource;
-import org.apache.fineract.infrastructure.dataqueries.api.DatatablesApiResource;
 import org.apache.fineract.infrastructure.dataqueries.data.GenericResultsetData;
 import org.apache.fineract.infrastructure.dataqueries.data.ResultsetColumnHeaderData;
 import org.apache.fineract.infrastructure.dataqueries.data.ResultsetColumnValueData;
@@ -155,6 +154,7 @@ public class GenericDataServiceImpl implements GenericDataService {
             final List<Object> columnValues = new ArrayList<>();
             for (int i = 0; i < rsmd.getColumnCount(); i++) {
                 final String columnName = rsmd.getColumnName(i + 1);
+                
                 LOGGER.info("*****************************columnName***************************** "+columnName);
                 final JdbcJavaType colType = columnHeaders.get(i).getColumnType();
                 if (colType == DATE) {
@@ -227,6 +227,7 @@ public class GenericDataServiceImpl implements GenericDataService {
                 ResultsetColumnHeaderData columnHeader = columnHeaders.get(j);
                 writer.append(doubleQuote + columnHeader.getColumnName() + doubleQuote + ": ");
                 colDisplayType = columnHeader.getColumnDisplayType();
+                LOGGER.info("colDisplayType "+colDisplayType);
                 final JdbcJavaType colType = columnHeader.getColumnType();
                 if (colDisplayType == null) {
                     colDisplayType = ResultsetColumnHeaderData.calcColumnDisplayType(colType);
