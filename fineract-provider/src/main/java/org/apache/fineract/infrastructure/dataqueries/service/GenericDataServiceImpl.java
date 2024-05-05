@@ -155,8 +155,9 @@ public class GenericDataServiceImpl implements GenericDataService {
             for (int i = 0; i < rsmd.getColumnCount(); i++) {
                 final String columnName = rsmd.getColumnName(i + 1);
                 
-                LOGGER.info("*****************************columnName***************************** "+columnName);
+                LOGGER.info("columnName "+columnName);
                 final JdbcJavaType colType = columnHeaders.get(i).getColumnType();
+                LOGGER.info("colType "+colType);
                 if (colType == DATE) {
                     Date tmpDate = (Date) rs.getObject(columnName);
                     columnValues.add(tmpDate == null ? null : tmpDate.toLocalDate());
