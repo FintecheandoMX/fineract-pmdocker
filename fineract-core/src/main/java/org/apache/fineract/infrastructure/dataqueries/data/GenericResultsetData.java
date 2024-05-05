@@ -20,6 +20,8 @@ package org.apache.fineract.infrastructure.dataqueries.data;
 
 import java.util.List;
 import org.apache.fineract.infrastructure.core.service.database.JdbcJavaType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Immutable data object for generic resultset data.
@@ -28,6 +30,8 @@ public final class GenericResultsetData {
 
     private final List<ResultsetColumnHeaderData> columnHeaders;
     private final List<ResultsetRowData> data;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenericResultsetData.class);
 
     public GenericResultsetData(final List<ResultsetColumnHeaderData> columnHeaders, final List<ResultsetRowData> resultsetDataRows) {
         this.columnHeaders = columnHeaders;
@@ -39,6 +43,9 @@ public final class GenericResultsetData {
     }
 
     public List<ResultsetRowData> getData() {
+        for (ResultsetRowData rowData : this.data) {
+            LOGGER.info("ROWDATA "+rowData); 
+        }
         return this.data;
     }
 
