@@ -269,8 +269,10 @@ public class DatatablesApiResource {
         if (genericResultSet) {
             final boolean prettyPrint = ApiParameterHelper.prettyPrint(uriInfo.getQueryParameters());
             json = this.toApiJsonSerializer.serializePretty(prettyPrint, results);
+            LOGGER.info("genericResultSetgenericResultSet TRUE");
         } else {
             json = this.genericDataService.generateJsonFromGenericResultsetData(results);
+            LOGGER.info("genericResultSetgenericResultSet FALSE");
         }
         LOGGER.info("REGRESO DATOS DE DATA TABLE CON ID");
         return json;
