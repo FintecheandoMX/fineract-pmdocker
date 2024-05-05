@@ -227,11 +227,12 @@ public class GenericDataServiceImpl implements GenericDataService {
                 ResultsetColumnHeaderData columnHeader = columnHeaders.get(j);
                 writer.append(doubleQuote + columnHeader.getColumnName() + doubleQuote + ": ");
                 colDisplayType = columnHeader.getColumnDisplayType();
-                LOGGER.info("colDisplayType "+colDisplayType);
+                LOGGER.info("colDisplayType1 "+colDisplayType);
                 final JdbcJavaType colType = columnHeader.getColumnType();
                 if (colDisplayType == null) {
                     colDisplayType = ResultsetColumnHeaderData.calcColumnDisplayType(colType);
                 }
+                LOGGER.info("colDisplayType2 "+colDisplayType);
                 currVal = row.get(j);
                 LOGGER.info("CURRVAL"+currVal);
                 if (currVal != null && colDisplayType != null) {
