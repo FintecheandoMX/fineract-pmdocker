@@ -175,11 +175,15 @@ public class GenericDataServiceImpl implements GenericDataService {
                             for (ResultsetColumnValueData rowColumnValue : rowColumnValues) {
                                 LOGGER.info("rowColumnValues ID "+rowColumnValue.getId()); 
                                 LOGGER.info("rowColumnValues VALUE "+rowColumnValue.getValue()); 
-                                int columnNameId = (int)rs.getObject(columnName);
-                                if(columnNameId==rowColumnValue.getId()){
-                                    LOGGER.info("SE AGREGA VALUE "+rowColumnValue.getValue()); 
-                                    columnValues.add((Object)rowColumnValue.getValue());            
-                                }
+                                if(rs.getObject(columnName)!=null)
+                                {
+                                    LOGGER.info("SE AGREGA rs.getObject(columnName) "+rs.getObject(columnName)); 
+                                    int columnNameId = (int)rs.getObject(columnName);
+                                    if(columnNameId==rowColumnValue.getId()){
+                                        LOGGER.info("SE AGREGA VALUE "+rowColumnValue.getValue()); 
+                                        columnValues.add((Object)rowColumnValue.getValue());            
+                                    }
+                                }                                
                             }
                         }
                         else{
