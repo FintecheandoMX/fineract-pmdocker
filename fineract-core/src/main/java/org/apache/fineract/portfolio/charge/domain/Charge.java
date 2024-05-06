@@ -130,6 +130,9 @@ public class Charge extends AbstractPersistableCustom {
     @JoinColumn(name = "income_or_liability_account_id")
     private GLAccount account;
 
+    @Column(name = "is_principal_charge", nullable = false)
+    private boolean principalCharge = false;
+
     @ManyToOne
     @JoinColumn(name = "tax_group_id")
     private TaxGroup taxGroup;
@@ -151,6 +154,7 @@ public class Charge extends AbstractPersistableCustom {
 
         final boolean penalty = command.booleanPrimitiveValueOfParameterNamed("penalty");
         final boolean active = command.booleanPrimitiveValueOfParameterNamed("active");
+        final boolean principalCharge = command.booleanPrimitiveValueOfParameterNamed("principalCharge");
         final MonthDay feeOnMonthDay = command.extractMonthDayNamed("feeOnMonthDay");
         final Integer feeInterval = command.integerValueOfParameterNamed("feeInterval");
         final BigDecimal minCap = command.bigDecimalValueOfParameterNamed("minCap");
@@ -176,7 +180,7 @@ public class Charge extends AbstractPersistableCustom {
 
         return new Charge(name, amount, currencyCode, chargeAppliesTo, chargeTimeType, chargeCalculationType, penalty, active, paymentMode,
                 feeOnMonthDay, feeInterval, minCap, maxCap, feeFrequency, enableFreeWithdrawalCharge, freeWithdrawalFrequency,
-                restartCountFrequency, countFrequencyType, account, taxGroup, enablePaymentType, paymentType);
+                restartCountFrequency, countFrequencyType, account, taxGroup, enablePaymentType, paymentType, principalCharge);
     }
 
     protected Charge() {}
@@ -186,7 +190,7 @@ public class Charge extends AbstractPersistableCustom {
             final ChargePaymentMode paymentMode, final MonthDay feeOnMonthDay, final Integer feeInterval, final BigDecimal minCap,
             final BigDecimal maxCap, final Integer feeFrequency, final boolean enableFreeWithdrawalCharge,
             final Integer freeWithdrawalFrequency, final Integer restartFrequency, final PeriodFrequencyType restartFrequencyEnum,
-            final GLAccount account, final TaxGroup taxGroup, final boolean enablePaymentType, final PaymentType paymentType) {
+            final GLAccount account, final TaxGroup taxGroup, final boolean enablePaymentType, final PaymentType paymentType, final boolean principalCharge) {
         this.name = name;
         this.amount = amount;
         this.currencyCode = currencyCode;
@@ -195,6 +199,7 @@ public class Charge extends AbstractPersistableCustom {
         this.chargeCalculation = chargeCalculationType.getValue();
         this.penalty = penalty;
         this.active = active;
+        this.principalCharge = principalCharge;
         this.account = account;
         this.taxGroup = taxGroup;
         this.chargePaymentMode = paymentMode == null ? null : paymentMode.getValue();
@@ -294,6 +299,10 @@ public class Charge extends AbstractPersistableCustom {
 
     public boolean isActive() {
         return this.active;
+    }
+
+    public boolean isPrincipalCharge() {
+        return this.principalCharge;
     }
 
     public boolean isPenalty() {
@@ -597,6 +606,14 @@ public class Charge extends AbstractPersistableCustom {
             actualChanges.put(activeParamName, newValue);
             this.active = newValue;
         }
+
+        final String principalChargeParamName = "principalCharge";
+        if (command.isChangeInBooleanParameterNamed(principalChargeParamName, this.principalCharge)) {
+            final boolean newValue = command.booleanPrimitiveValueOfParameterNamed(principalChargeParamName);
+            actualChanges.put(principalChargeParamName, newValue);
+            this.principalCharge = newValue;
+        }
+
         // allow min and max cap to be only added to PERCENT_OF_AMOUNT for now
         if (isPercentageOfApprovedAmount()) {
             final String minCapParamName = "minCap";
@@ -680,7 +697,7 @@ public class Charge extends AbstractPersistableCustom {
         return ChargeData.instance(getId(), this.name, this.amount, currency, chargeTimeType, chargeAppliesTo, chargeCalculationType,
                 chargePaymentMode, getFeeOnMonthDay(), this.feeInterval, this.penalty, this.active, this.enableFreeWithdrawal,
                 this.freeWithdrawalFrequency, this.restartFrequency, this.restartFrequencyEnum, this.enablePaymentType, paymentTypeData,
-                this.minCap, this.maxCap, feeFrequencyType, accountData, taxGroupData);
+                this.minCap, this.maxCap, feeFrequencyType, accountData, taxGroupData, this.principalCharge);
     }
 
     public Integer getChargePaymentMode() {
@@ -772,12 +789,12 @@ public class Charge extends AbstractPersistableCustom {
                 && Objects.equals(feeOnMonth, other.feeOnMonth) && penalty == other.penalty && active == other.active
                 && deleted == other.deleted && Objects.equals(minCap, other.minCap) && Objects.equals(maxCap, other.maxCap)
                 && Objects.equals(feeFrequency, other.feeFrequency) && Objects.equals(account, other.account)
-                && Objects.equals(taxGroup, other.taxGroup);
+                && Objects.equals(taxGroup, other.taxGroup) && principalCharge == other.principalCharge;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(name, amount, currencyCode, chargeAppliesTo, chargeTimeType, chargeCalculation, chargePaymentMode, feeOnDay,
-                feeInterval, feeOnMonth, penalty, active, deleted, minCap, maxCap, feeFrequency, account, taxGroup);
+                feeInterval, feeOnMonth, penalty, active, deleted, minCap, maxCap, feeFrequency, account, taxGroup, principalCharge);
     }
 }
